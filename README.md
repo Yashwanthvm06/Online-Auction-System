@@ -27,6 +27,7 @@ An online auction platform where buyers can request sellers to list items for au
    ```bash
    cd Online-Auction-System
 3. Install the necessary dependencies:
+   ```bash
    pip install -r requirements.txt
 4. Run the Flask application:
     ```bash
