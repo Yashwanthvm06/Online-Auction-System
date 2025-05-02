@@ -23,16 +23,12 @@ An online auction platform where buyers can request sellers to list items for au
 1. Clone the repository:
    ```bash
    git clone https://github.com/Yashwanthvm06/Online-Auction-System.git
-2.Navigate to the project directory:
+2. Navigate to the project directory:
    ```bash
    cd Online-Auction-System
-3.Install the necessary dependencies:
+3. Install the necessary dependencies:
    pip install -r requirements.txt
-4.Run the Flask application:
+4. Run the Flask application:
     ```bash
 The application will start, and you can access it at http://localhost:5000.
-This should be inside your `README.md`, guiding anyone to set up the project on their own machine.
 
----
-
-Let me know if this clears up any confusion!
