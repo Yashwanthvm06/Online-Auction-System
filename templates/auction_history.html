@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Auction History - AuctionPro{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-primary text-center">Auction History</h1>
+    {% if auctions %}
+    <div class="row">
+        {% for auction in auctions %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <img src="{{ auction.image_path }}" alt="{{ auction.title }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ auction.title }}</h5>
+                    <p><strong>Final Bid:</strong> ₹{{ auction.final_bid }}</p>
+                    <p><strong>Winner:</strong> {{ auction.winner if auction.winner else 'No Winner' }}</p>
+                    <p><strong>End Time:</strong> {{ auction.end_time }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center text-muted">No completed auctions found in the last week.</p>
+    {% endif %}
+</div>
+{% endblock %}

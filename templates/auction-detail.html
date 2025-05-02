@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Auction Details - AuctionPro{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm p-4">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{{ auction.image_path }}" alt="{{ auction.title }}" class="img-fluid rounded">
+            </div>
+            <div class="col-md-6">
+                <h1 class="text-primary">{{ auction.title }}</h1>
+                <p class="text-muted">{{ auction.description }}</p>
+                <p><strong>Starting Price:</strong> ₹{{ auction.starting_price }}</p>
+                <p><strong>End Time:</strong> {{ auction.end_time }}</p>
+            </div>
+        </div>
+    </div>
+
+    {% if session.get('user_id') and not auction_ended %}
+    <div class="card shadow-sm p-4 mt-4">
+        <h2 class="text-primary">Place Your Bid</h2>
+        <form method="post">
+            <div class="mb-3">
+                <label for="bid_amount" class="form-label">Bid Amount</label>
+                <input type="number" class="form-control" id="bid_amount" name="bid_amount" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Submit Bid</button>
+        </form>
+    </div>
+    {% elif auction_ended and is_winner %}
+    <div class="card shadow-sm p-4 mt-4">
+        <h2 class="text-success">Congratulations! You are the winner of this auction.</h2>
+        <form method="POST" action="{{ url_for('payment_confirmation', auction_id=auction.id) }}" class="mt-3">
+            <p><strong>Amount to Pay:</strong> ₹{{ auction.final_bid }}</p>
+            <button type="submit" class="btn btn-primary w-100">Pay Now</button>
+        </form>
+    </div>
+    {% elif auction_ended %}
+    <div class="card shadow-sm p-4 mt-4">
+        <h2 class="text-danger">This auction has ended.</h2>
+        <p>The winner will be notified shortly.</p>
+    </div>
+    {% endif %}
+
+    <div class="card shadow-sm p-4 mt-4">
+        <h2 class="text-primary">Bids</h2>
+        {% if bids %}
+        <ul class="list-group">
+            {% for bid in bids %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                ₹{{ bid.bid_amount }} by {{ bid.username }}
+                <span class="badge bg-secondary">{{ bid.bid_time }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-center text-muted">No bids yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller Dashboard - AuctionHouse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background-color: #003366;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .navbar-nav .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            margin-top: 40px;
+            margin-bottom: 80px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #003366;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+
+        th, td {
+            padding: 14px;
+            border: 1px solid #e1e1e1;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        .no-data {
+            text-align: center;
+            font-style: italic;
+            color: gray;
+        }
+
+        footer {
+            background-color: #003366;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .alert-area {
+            margin-top: 20px;
+        }
+
+        @media screen and (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">AuctionHouse</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/auctions">Auctions</a></li>
+                <li class="nav-item"><a class="nav-link" href="/add-auction-form">Sell Item</a></li>
+                <li class="nav-item"><a class="nav-link" href="/seller">Seller Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('respond_to_request') }}">Respond to Requests</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('view_requests') }}">View Requests</a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+  
+
+<!-- Main Content -->
+<div class="container">
+    <h2>Your Active Auctions (Seller View)</h2>
+    <div class="alert-area" id="alert-area"></div>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Starting Price</th>
+                <th>End Time</th>
+                <th>Bids</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="seller-auctions">
+            <tr><td colspan="6" class="no-data">Loading...</td></tr>
+        </tbody>
+    </table>
+
+    <h2>Items You've Bid On (Buyer View)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Auction</th>
+                <th>Your Bid</th>
+                <th>Current Highest</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="buyer-bids">
+            <tr><td colspan="4" class="no-data">Loading...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Footer -->
+<footer>
+    &copy; 2025 AuctionHouse. All rights reserved.
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/dashboard-data')
+            .then(response => response.json())
+            .then(data => {
+                const sellerTable = document.getElementById('seller-auctions');
+                const buyerTable = document.getElementById('buyer-bids');
+
+                // Populate seller table
+                if (data.seller.length > 0) {
+                    sellerTable.innerHTML = '';
+                    data.seller.forEach(auction => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${auction.title}</td>
+                            <td>₹${auction.starting_price}</td>
+                            <td>${auction.end_time}</td>
+                            <td>${auction.bid_count}</td>
+                            <td>${auction.status}</td>
+                            <td class="actions">
+                                <button class="btn btn-sm btn-danger" onclick="deleteAuction(${auction.id})">Delete</button>
+                                <a href="/edit-auction/${auction.id}" class="btn btn-sm btn-primary">Update</a>
+                            </td>
+                        `;
+                        sellerTable.appendChild(row);
+                    });
+                } else {
+                    sellerTable.innerHTML = '<tr><td colspan="6" class="no-data">No active auctions found.</td></tr>';
+                }
+
+                // Populate buyer table
+                if (data.buyer.length > 0) {
+                    buyerTable.innerHTML = '';
+                    data.buyer.forEach(bid => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${bid.auction_title}</td>
+                            <td>₹${bid.your_bid}</td>
+                            <td>₹${bid.highest_bid}</td>
+                            <td>${bid.status}</td>
+                        `;
+                        buyerTable.appendChild(row);
+                    });
+                } else {
+                    buyerTable.innerHTML = '<tr><td colspan="4" class="no-data">No bidding activity found.</td></tr>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching dashboard data:', error);
+                document.getElementById('alert-area').innerHTML = `
+                    <div class="alert alert-danger">Failed to load data. Please try again later.</div>
+                `;
+            });
+    });
+
+    function deleteAuction(auctionId) {
+        if (confirm('Are you sure you want to delete this auction?')) {
+            fetch(`/delete-auction/${auctionId}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Failed to delete auction.');
+                }
+            })
+            .catch(error => {
+                console.error('Delete error:', error);
+                alert('Server error while deleting auction.');
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

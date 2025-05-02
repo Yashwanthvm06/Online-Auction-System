@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AuctionPro{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-primary text-center">My Auctions</h1>
+    {% if auctions %}
+    <table class="table table-striped table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Starting Price</th>
+                <th>End Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for auction in auctions %}
+            <tr>
+                <td>
+                    <img src="{{ auction.image_path }}" alt="Auction Image" class="img-thumbnail" style="max-width: 100px;">
+                </td>
+                <td>{{ auction.title }}</td>
+                <td>{{ auction.description }}</td>
+                <td>₹{{ auction.starting_price }}</td>
+                <td>{{ auction.end_time }}</td>
+                <td>
+                    {% if auction.end_time > now %}
+                    <span class="badge bg-success">Active</span>
+                    {% else %}
+                    <span class="badge bg-danger">Ended</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-center text-muted">No auctions found.</p>
+    {% endif %}
+</div>
+{% endblock %}

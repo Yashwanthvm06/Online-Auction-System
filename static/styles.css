@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    -webkit-text-size-adjust: 100%; /* For older WebKit browsers */
+    text-size-adjust: 100%; /* For modern browsers */
+}
+
+.navbar {
+    background-color: #007bff;
+}
+
+.navbar a {
+    color: white;
+}
+
+.navbar a:hover {
+    color: #dceeff;
+}
+
+footer {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.text-align-match-parent {
+    text-align: -webkit-match-parent; /* For older WebKit browsers */
+    text-align: match-parent; /* For Safari 15.4+ */
+}
+
+.print-color-adjust {
+    -webkit-print-color-adjust: exact; /* For older WebKit browsers */
+    print-color-adjust: exact; /* For modern browsers */
+}

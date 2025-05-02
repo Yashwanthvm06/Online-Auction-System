@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}My Requests - AuctionPro{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-primary text-center">My Requests</h1>
+    <form method="post" class="mb-4">
+        <div class="mb-3">
+            <label for="item_name" class="form-label">Item Name</label>
+            <input type="text" class="form-control" id="item_name" name="item_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="budget" class="form-label">Budget</label>
+            <input type="number" class="form-control" id="budget" name="budget" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Submit Request</button>
+    </form>
+
+    <h2 class="mt-5">Existing Requests</h2>
+    {% if requests %}
+    <ul class="list-group">
+        {% for request in requests %}
+        <li class="list-group-item">
+            <strong>{{ request.item_name }}</strong> - {{ request.description }}
+            <span class="badge bg-secondary">{{ request.status }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-center text-muted">No requests found.</p>
+    {% endif %}
+</div>
+{% endblock %}

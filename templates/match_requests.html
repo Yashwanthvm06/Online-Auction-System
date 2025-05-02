@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Matched Requests - AuctionPro{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-primary text-center">Matched Requests</h1>
+    {% if matched_requests %}
+    <table class="table table-striped table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>Item Name</th>
+                <th>Description</th>
+                <th>Budget</th>
+                <th>Seller</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in matched_requests %}
+            <tr>
+                <td>{{ request.item_name }}</td>
+                <td>{{ request.description }}</td>
+                <td>₹{{ request.budget }}</td>
+                <td>{{ request.seller_name }}</td>
+                <td>{{ request.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-center text-muted">No matched requests found.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Update Auction - AuctionPro{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-primary text-center">Update Auction</h1>
+    <form method="post">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ auction.title }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" required>{{ auction.description }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="starting_price" class="form-label">Starting Price (₹)</label>
+            <input type="number" class="form-control" id="starting_price" name="starting_price" value="{{ auction.starting_price }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="end_time" class="form-label">End Time</label>
+            <input type="datetime-local" class="form-control" id="end_time" name="end_time" value="{{ auction.end_time|replace(' ', 'T') }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Update Auction</button>
+    </form>
+</div>
+{% endblock %}

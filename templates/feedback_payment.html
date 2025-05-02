@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Feedback & Payment - AuctionPro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --primary: #007bff;
+      --success: #28a745;
+      --danger: #dc3545;
+      --light: #f8f9fa;
+      --text-dark: #343a40;
+      --bg-card: #fff;
+      --radius: 12px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--light);
+      color: var(--text-dark);
+    }
+
+    header {
+      background-color: var(--primary);
+      color: #fff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 999;
+    }
+
+    .nav-title {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: #fff;
+      margin-left: 20px;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      margin-top: 100px;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--primary);
+    }
+
+    .section {
+      background-color: var(--bg-card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+
+    .section h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .rating {
+      display: flex;
+      gap: 10px;
+    }
+
+    .rating input[type="radio"] {
+      display: none;
+    }
+
+    .rating label {
+      font-size: 24px;
+      cursor: pointer;
+      color: #ccc;
+    }
+
+    .rating input[type="radio"]:checked + label {
+      color: gold;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .payment-summary {
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .payment-summary strong {
+      color: var(--success);
+    }
+
+    .confirmation-box {
+      background: #eaf9f0;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border-left: 5px solid var(--success);
+    }
+
+    .confirmation-box p {
+      margin: 0;
+    }
+
+    @media screen and (max-width: 768px) {
+      nav a {
+        font-size: 14px;
+        margin-left: 10px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .section h2 {
+        font-size: 20px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-title">AuctionPro</div>
+    <nav>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/add_auction">Add Auction</a>
+      <a href="/history">Auction History</a>
+      <a href="/logout">Logout</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Feedback & Payment</h1>
+
+    <section class="section">
+      <h2>Auction Details</h2>
+      <p><strong>Item:</strong> {{ auction.title }}</p>
+      <p><strong>Description:</strong> {{ auction.description }}</p>
+      <p><strong>Final Bid:</strong> ₹{{ auction.final_bid }}</p>
+    </section>
+
+    <section class="section">
+      <h2>Leave Your Feedback</h2>
+      <form method="POST">
+        <div class="form-group">
+          <label for="rating">Rating</label>
+          <div class="rating">
+            <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+            <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+            <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+            <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+            <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="comments">Comments</label>
+          <textarea id="comments" name="comments" placeholder="Share your experience..."></textarea>
+        </div>
+
+        <button type="submit" name="feedback" class="btn">Submit Feedback</button>
+      </form>
+    </section>
+
+    <section class="section">
+      <h2>Make Payment</h2>
+      <form method="POST">
+        <p><strong>Amount to Pay:</strong> ₹{{ auction.final_bid }}</p>
+        <button type="submit" name="payment" class="btn">Pay Now</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

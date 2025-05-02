@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Confirmation{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h1 class="text-success">🎉 Payment Successful!</h1>
+    <p>Thank you for your payment of ₹{{ auction.final_bid }} for <strong>{{ auction.title }}</strong>.</p>
+    <p>Congratulations! You are the winner of this auction.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Return to Home</a>
+</div>
+{% endblock %}

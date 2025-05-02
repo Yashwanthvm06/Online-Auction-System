@@ -1,0 +1,93 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table users {
+  id integer [primary key]
+  username varchar [not null, unique]
+  email varchar [not null, unique]
+  password varchar [not null]
+  user_type enum('buyer', 'seller') [not null]
+}
+
+Table auctions {
+  id integer [primary key]
+  title varchar(255) [not null]
+  description text [not null]
+  starting_price decimal(10,2) [not null]
+  end_time datetime [not null]
+  seller_id integer [not null]
+  image_path varchar(255)
+  status varchar(20) [default: 'active']
+}
+
+Table bids {
+  id integer [primary key]
+  user_id integer [not null]
+  item_id integer [not null]
+  bid_amount decimal(10,2) [not null]
+  bid_time timestamp [default: current_timestamp]
+}
+
+Table item_requests {
+  id integer [primary key]
+  buyer_id integer [not null]
+  item_name varchar(255) [not null]
+  description text
+  budget decimal(10,2) [default: 0.00]
+  status enum('Pending', 'Matched', 'Rejected') [default: 'Pending']
+  created_at timestamp [default: current_timestamp]
+  seller_id integer
+}
+
+Table feedback {
+  id integer [primary key]
+  reviewer_id integer [not null]
+  reviewed_user_id integer [not null]
+  rating integer
+  review text
+  review_time timestamp [default: current_timestamp]
+}
+
+Table payments {
+  id integer [primary key]
+  transaction_id integer [not null]
+  amount decimal(10,2) [not null]
+  payment_status enum('pending', 'completed', 'failed') [default: 'pending']
+  payment_time timestamp [default: current_timestamp]
+}
+
+Table seller_responses {
+  id integer [primary key]
+  request_id integer
+  seller_id integer
+  title varchar(255)
+  description text
+  price decimal(10,2)
+  image_path varchar(255)
+  end_time datetime
+  status varchar(50) [default: 'pending']
+}
+
+Table transactions {
+  id integer [primary key]
+  buyer_id integer [not null]
+  seller_id integer [not null]
+  item_id integer [not null]
+  bid_amount decimal(10,2) [not null]
+  payment_status enum('pending', 'completed', 'failed') [default: 'pending']
+  transaction_time timestamp [default: current_timestamp]
+}
+
+Ref: auctions.seller_id > users.id
+Ref: bids.user_id > users.id
+Ref: bids.item_id > auctions.id
+Ref: item_requests.buyer_id > users.id
+Ref: item_requests.seller_id > users.id
+Ref: feedback.reviewer_id > users.id
+Ref: feedback.reviewed_user_id > users.id
+Ref: payments.transaction_id > transactions.id
+Ref: seller_responses.request_id > item_requests.id
+Ref: seller_responses.seller_id > users.id
+Ref: transactions.buyer_id > users.id
+Ref: transactions.seller_id > users.id
+Ref: transactions.item_id > auctions.id
