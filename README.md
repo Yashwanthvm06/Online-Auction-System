@@ -31,5 +31,6 @@ An online auction platform where buyers can request sellers to list items for au
    pip install -r requirements.txt
 4. Run the Flask application:
     ```bash
+    python app.py
 The application will start, and you can access it at http://localhost:5000.
 
