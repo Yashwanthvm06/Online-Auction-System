@@ -1,5 +1,3 @@
-# Online-Auction-System
-It is an online based auction system which buyer can keep request to the seller to put item on auction.
 # Online Auction System
 
 ## Description
@@ -23,14 +21,58 @@ An online auction platform where buyers can request sellers to list items for au
 1. Clone the repository:
    ```bash
    git clone https://github.com/Yashwanthvm06/Online-Auction-System.git
+   ```
 2. Navigate to the project directory:
    ```bash
    cd Online-Auction-System
+   ```
 3. Install the necessary dependencies:
    ```bash
    pip install -r requirements.txt
+   ```
 4. Run the Flask application:
-    ```bash
-    python app.py
+   ```bash
+   python app.py
+   ```
 The application will start, and you can access it at http://localhost:5000.
+
+## Project Structure
+
+The project is organized as follows:
+
+```
+Online-Auction-System/
+│
+├── app.py                 # Main application entry point
+├── requirements.txt       # Python dependencies
+├── README.md              # Project documentation
+├── static/                # Static files (CSS, JS, images)
+│   ├── css/
+│   ├── js/
+│   └── images/
+├── templates/             # HTML templates for the application
+│   ├── add_auction.html
+│   ├── auction_history.html
+│   ├── auction-detail.html
+│   ├── base.html
+│   ├── bidding_page.html
+│   ├── buyer_request.html
+│   ├── dashboard.html
+│   ├── edit_auction.html
+│   ├── feedback_payment.html
+│   ├── index.html
+│   ├── login.html
+│   ├── match_requests.html
+│   ├── payment_confirmation.html
+│   ├── register.html
+│   ├── respond_to_request.html
+│   ├── seller.html
+│   ├── transaction_history.html
+│   ├── update_auction.html
+│   └── view_requests.html
+└── database/              # Database files
+    └── auction.db         # SQLite database file
+```
+
+This structure separates concerns, making the project easier to maintain and scale.
 
